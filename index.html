@@ -32,6 +32,8 @@
 
 body{
     min-height:100vh;
+    position:relative;
+    isolation:isolate;
     font-family:Arial,sans-serif;
     color:var(--green);
 
@@ -44,6 +46,8 @@ body{
 }
 
 .wrapper{
+    position:relative;
+    z-index:1;
     width:100%;
     max-width:1300px;
     margin:auto;
@@ -91,15 +95,15 @@ h1{
     display:flex;
     justify-content:center;
     align-items:center;
-    gap:45px;
+    gap:28px;
     flex-wrap:wrap;
 }
 
 .button-link{
     display:block;
-    opacity:0;
-    transform:translateY(45px) scale(.96);
-    animation:buttonRise .75s cubic-bezier(.2,.75,.25,1) forwards;
+    animation:buttonRise .75s cubic-bezier(.2,.75,.25,1) backwards;
+    opacity:1;
+    transform:none;
     transition:transform .25s ease;
 }
 
@@ -122,12 +126,14 @@ h1{
 .button-link:hover,
 .button-link:focus-visible{
     transform:translateY(-8px) scale(1.04);
-    outline:none;
+    outline:3px solid var(--green);
+    outline-offset:8px;
+    border-radius:12px;
 }
 
 .button-link img{
     display:block;
-    width:320px;
+    width:220px;
     max-width:85vw;
 
     filter:drop-shadow(0 14px 18px rgba(0,0,0,.35));
@@ -193,7 +199,7 @@ h1{
     }
 
     .button-link img{
-        width:280px;
+        width:200px;
     }
 
 }
@@ -201,11 +207,14 @@ h1{
 @media(max-width:900px){
 
     .buttons{
-        flex-direction:column;
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,200px));
+        gap:24px;
     }
 
     .button-link img{
-        width:min(420px,90vw);
+        width:100%;
+        max-width:200px;
     }
 
     .subtitle{
@@ -214,7 +223,56 @@ h1{
 
 }
 
+/* Decorative van sits between the background and the Academy content. */
+.ape-scene{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    overflow:hidden;
+    pointer-events:none;
+}
+.ape-route{
+    position:absolute;
+    left:0;
+    top:72%;
+    width:110px;
+    animation:apeJourney 48s linear infinite;
+    will-change:transform;
+}
+.ape-van{
+    display:block;
+    width:100%;
+    height:auto;
+    opacity:.65;
+    animation:apeTrundle .65s ease-in-out infinite alternate;
+}
+@keyframes apeJourney{
+    0%{transform:translate(-140px,0) scaleX(1)}
+    46%{transform:translate(calc(100vw + 30px),-18vh) scaleX(1)}
+    49%{transform:translate(calc(100vw + 30px),-18vh) scaleX(1)}
+    50%{transform:translate(calc(100vw + 30px),18vh) scaleX(-1)}
+    96%{transform:translate(-140px,0) scaleX(-1)}
+    99%{transform:translate(-140px,0) scaleX(-1)}
+    100%{transform:translate(-140px,0) scaleX(1)}
+}
+@keyframes apeTrundle{
+    from{transform:translateY(0) rotate(-.6deg)}
+    to{transform:translateY(-2px) rotate(.6deg)}
+}
+@media(max-width:600px){
+    .wrapper{padding:28px 20px}
+    .logo{width:180px}
+    h1{font-size:40px;letter-spacing:1px}
+    .subtitle{font-size:18px;margin:16px auto 32px}
+    .buttons{gap:20px}
+    .footer{margin-top:40px;line-height:1.5}
+    .ape-route{width:80px}
+}
+
 @media(prefers-reduced-motion:reduce){
+
+    .ape-route{animation:none;left:16px;top:auto;bottom:20px}
+    .ape-van{animation:none;opacity:.35}
 
     .logo,
     h1,
@@ -238,6 +296,32 @@ h1{
 </head>
 
 <body>
+
+<div class="ape-scene" aria-hidden="true">
+    <div class="ape-route">
+        <svg class="ape-van" viewBox="0 0 160 100" xmlns="http://www.w3.org/2000/svg" focusable="false">
+            <ellipse cx="80" cy="91" rx="67" ry="4" fill="#063f2c" opacity=".15"/>
+            <g stroke="#063f2c" stroke-width="3" stroke-linejoin="round">
+                <path d="M14 25h78v55H14z" fill="#00c900"/>
+                <path d="M92 39h29l24 29v12H92z" fill="#00c900"/>
+                <path d="M100 44h18l16 21h-34z" fill="#e1f2e6"/>
+                <path d="M13 25h81v9H13z" fill="#063f2c"/>
+                <path d="M20 41h63v27H20z" fill="#fff4d6"/>
+                <path d="M20 41h63v6H20z" fill="#00c900"/>
+                <path d="M12 78h135v7H12z" fill="#063f2c"/>
+                <circle cx="39" cy="84" r="11" fill="#063f2c"/>
+                <circle cx="126" cy="84" r="11" fill="#063f2c"/>
+                <circle cx="39" cy="84" r="4" fill="#fff4d6" stroke="none"/>
+                <circle cx="126" cy="84" r="4" fill="#fff4d6" stroke="none"/>
+                <path d="M137 69h8v6h-8z" fill="#fff4d6" stroke="none"/>
+                <path d="M100 71h7" stroke-linecap="round"/>
+            </g>
+            <text x="51" y="61" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="10" fill="#063f2c">PIZZA</text>
+        </svg>
+    </div>
+</div>
+
+
 
 <div class="wrapper">
 
